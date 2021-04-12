@@ -50,9 +50,7 @@ export const ToDoListForm = ({
   };
 
   const handleCheck = (id, e, t) => {
-    console.log(id);
-    // update completed
-    const updateTodo = {
+      const updateTodo = {
       taskTitle: t.taskTitle,
       completed: !t.completed,
     };
@@ -60,7 +58,7 @@ export const ToDoListForm = ({
       item._id === t._id ? updateTodo : item
     );
     setTodos(modifiedList);
-    updateItem(e, manipulateItem(id, modifiedList));
+   updateItem(e, manipulateItem(id, modifiedList));
   };
 
   const manipulateItem = (id, newTodos) => {
@@ -114,7 +112,6 @@ export const ToDoListForm = ({
               </span>
               {Moment(created).format("YYYY-MM-DD")}
               <span style={{ paddingLeft: "15px", fontWeight: "bolder" }}>
-                Compeleted:
               </span>{" "}
               <Checkbox
                 checked={completed}
@@ -126,7 +123,7 @@ export const ToDoListForm = ({
                 padding="50px"
                 className={classes.standardSpace}
                 onClick={(e) => {
-                  deleteTodo(toDoList._id, e, todos[index]);
+                  deleteTodo(toDoList._id, e, todos);
                 }}
               >
                 <DeleteIcon />
