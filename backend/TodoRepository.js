@@ -9,7 +9,7 @@ class TodoRepository {
     const newTodo = {
       title: title,
       todos: todos,
-      completed: completed,
+      completed: isCompleted(todos),
     };
     const todo = new this.model(newTodo);
 
@@ -34,10 +34,15 @@ class TodoRepository {
       $set: {
         title: object.title,
         todos: object.todos,
-        completed: object.completed,
+        completed: isCompleted(object.todos),
       },
     });
   }
 }
+const isCompleted = (todos) => {
+
+  if (todos.every((x) => x.completed == true)) return true;
+  return false;
+};
 
 module.exports = new TodoRepository(Todo);
