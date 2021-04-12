@@ -8,7 +8,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import Typography from "@material-ui/core/Typography";
 import { ToDoListForm } from "./ToDoListForm";
-import MockApi from "../../MockApi";
 import ApiConfig from "../../ApiConfig";
 import { Button, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,12 +35,7 @@ const useStyles = makeStyles((theme) => ({
 /********************************************************** */
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const getPersonalTodos = () => {
-  return sleep(1000).then(() => MockApi.getAllItems());
-};
-
 export const ToDoLists = ({ style }) => {
-  const [toDoLists, setToDoLists] = useState({});
   const [activeList, setActiveList] = useState();
   const [items, setItems] = useState({});
   const classes = useStyles();
@@ -49,15 +43,11 @@ export const ToDoLists = ({ style }) => {
   /********************************************************** */
   useEffect(() => {
     const fetchGetAllItems = async () => {
-      const items = await ApiConfig.getAllItems();
+      const items = await sleep(1000).then(() => ApiConfig.getAllItems());
       setItems(items);
     };
     fetchGetAllItems();
-  }, []);
-
-  useEffect(() => {
-    getPersonalTodos().then(setToDoLists);
-  }, []);
+  }, [items]);
 
   /********************************************************** */
   const deleteItem = (item) => {
@@ -78,11 +68,10 @@ export const ToDoLists = ({ style }) => {
     setItems(
       items.map((item) => (item._id === payload._id ? updatedTodo : item))
     );
-    console.log(items);
   };
 
   /********************************************************** */
-  if (!Object.keys(toDoLists).length) return null;
+  if (!Object.keys(items).length) return null;
   return (
     <Fragment>
       <Card style={style}>
@@ -104,7 +93,13 @@ export const ToDoLists = ({ style }) => {
                   />
 
                   <ListItemIcon>
-                    <Checkbox edge="start" checked={true} disableRipple />
+                    <Checkbox
+                      edge="start"
+                      disabled
+                      color="primary"
+                      checked={items[key].completed}
+                      disableRipple
+                    />
                   </ListItemIcon>
 
                   <Button

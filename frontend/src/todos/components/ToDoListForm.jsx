@@ -12,6 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
+
 const useStyles = makeStyles({
   card: {
     margin: "1rem",
@@ -46,12 +47,9 @@ export const ToDoListForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("form submitted");
   };
 
   const handleCheck = (id, e, t) => {
-    console.log(id);
-    // update completed
     const updateTodo = {
       taskTitle: t.taskTitle,
       completed: !t.completed,
@@ -60,7 +58,8 @@ export const ToDoListForm = ({
       item._id === t._id ? updateTodo : item
     );
     setTodos(modifiedList);
-    updateItem(e, manipulateItem(id, modifiedList));
+    const updatedITem = manipulateItem(id, modifiedList);
+    updateItem(e, updatedITem);
   };
 
   const manipulateItem = (id, newTodos) => {
@@ -87,7 +86,6 @@ export const ToDoListForm = ({
   };
 
   const deleteTodo = (id, e, todo) => {
-    console.log(todo._id);
     const cleanList = todos.filter((item) => item._id !== todo._id);
     setTodos(cleanList);
     updateItem(e, manipulateItem(id, cleanList));
@@ -113,9 +111,9 @@ export const ToDoListForm = ({
                 Created:
               </span>
               {Moment(created).format("YYYY-MM-DD")}
-              <span style={{ paddingLeft: "15px", fontWeight: "bolder" }}>
-                Compeleted:
-              </span>{" "}
+              <span
+                style={{ paddingLeft: "15px", fontWeight: "bolder" }}
+              ></span>{" "}
               <Checkbox
                 checked={completed}
                 onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
