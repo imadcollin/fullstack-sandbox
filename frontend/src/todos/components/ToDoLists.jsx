@@ -78,7 +78,6 @@ export const ToDoLists = ({ style }) => {
     setItems(
       items.map((item) => (item._id === payload._id ? updatedTodo : item))
     );
-    console.log(items);
   };
 
   /********************************************************** */
@@ -104,7 +103,7 @@ export const ToDoLists = ({ style }) => {
                   />
 
                   <ListItemIcon>
-                    <Checkbox edge="start" checked={items[key].completed} disableRipple />
+                    <Checkbox edge="start" disabled checked={items[key].completed} disableRipple />
                   </ListItemIcon>
 
                   <Button
