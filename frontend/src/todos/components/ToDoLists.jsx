@@ -104,7 +104,7 @@ export const ToDoLists = ({ style }) => {
                   />
 
                   <ListItemIcon>
-                    <Checkbox edge="start" checked={true} disableRipple />
+                    <Checkbox edge="start" checked={items[key].completed} disableRipple />
                   </ListItemIcon>
 
                   <Button
