@@ -53,7 +53,7 @@ export const ToDoLists = ({ style }) => {
       setItems(items);
     };
     fetchGetAllItems();
-  }, []);
+  }, [items]);
 
   useEffect(() => {
     getPersonalTodos().then(setToDoLists);
@@ -81,7 +81,7 @@ export const ToDoLists = ({ style }) => {
   };
 
   /********************************************************** */
-  if (!Object.keys(toDoLists).length) return null;
+  if (!Object.keys(items).length) return null;
   return (
     <Fragment>
       <Card style={style}>
@@ -103,7 +103,13 @@ export const ToDoLists = ({ style }) => {
                   />
 
                   <ListItemIcon>
-                    <Checkbox edge="start" disabled checked={items[key].completed} disableRipple />
+                    <Checkbox
+                      edge="start"
+                      disabled
+                      color="primary"
+                      checked={items[key].completed}
+                      disableRipple
+                    />
                   </ListItemIcon>
 
                   <Button
