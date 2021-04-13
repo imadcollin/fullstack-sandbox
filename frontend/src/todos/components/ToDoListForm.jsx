@@ -12,7 +12,12 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
-
+import DateFnsUtils from "@date-io/moment";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 const useStyles = makeStyles({
   card: {
     margin: "1rem",
@@ -44,6 +49,7 @@ export const ToDoListForm = ({
   const [todos, setTodos] = useState(toDoList.todos);
   const [check, setCheck] = useState(false);
   const [taskTitle1, setTaskTitle1] = useState("");
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -90,7 +96,11 @@ export const ToDoListForm = ({
     setTodos(cleanList);
     updateItem(e, manipulateItem(id, cleanList));
   };
-
+  const handleDateChange = (date) => {
+    date = Moment(date).format("YYYY-MM-DD");
+    console.log(date);
+    setSelectedDate(date);
+  };
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -111,6 +121,19 @@ export const ToDoListForm = ({
                 Created:
               </span>
               {Moment(created).format("YYYY-MM-DD")}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="Date picker dialog"
+                  format="YYYY-MM-DD"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
               <span
                 style={{ paddingLeft: "15px", fontWeight: "bolder" }}
               ></span>{" "}
