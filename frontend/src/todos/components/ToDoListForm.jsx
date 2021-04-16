@@ -50,10 +50,19 @@ export const ToDoListForm = ({
   };
 
   const handleCheck = (id, e, t) => {
-    const updateTodo = {
-      taskTitle: t.taskTitle,
-      completed: !t.completed,
-    };
+    if (!(t.taskTitle || taskTitle1)) {
+      alert("Please give a title...!");
+      e.target.checked = false;
+      return;
+    }
+    let title;
+    if (t.taskTitle) title = t.taskTitle;
+    else title = taskTitle1;
+
+    let updateTodo = t;
+    updateTodo.completed = !t.completed;
+    updateTodo.taskTitle = title;
+    setTaskTitle1(null);
     const modifiedList = todos.map((item) =>
       item._id === t._id ? updateTodo : item
     );
@@ -71,13 +80,13 @@ export const ToDoListForm = ({
     };
   };
   const addTodo = (e, id, todoItem) => {
+    setTaskTitle1(taskTitle1);
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
     };
     todoItem.pop();
     todoItem.push(updateTodo);
-
     setTodos([...todos, todoItem]);
     updateItem(e, manipulateItem(id, todoItem));
   };
