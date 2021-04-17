@@ -62,7 +62,7 @@ export const ToDoLists = ({ style }) => {
   const updateItem = async (e, newItem) => {
     let payload = newItem;
 
-    e.stopPropagation();
+    //e.stopPropagation();
     const updatedTodo = await ApiConfig.updateItem(payload._id, payload);
 
     setItems(

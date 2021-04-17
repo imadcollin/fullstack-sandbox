@@ -12,6 +12,7 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
+import { useDebouncedCallback } from "use-debounce";
 
 const useStyles = makeStyles({
   card: {
@@ -34,16 +35,13 @@ const useStyles = makeStyles({
   },
 });
 
-export const ToDoListForm = ({
-  toDoList,
-  saveToDoList,
-  deleteItem,
-  updateItem,
-}) => {
+export const ToDoListForm = ({ toDoList, updateItem }) => {
   const classes = useStyles();
   const [todos, setTodos] = useState(toDoList.todos);
   const [check, setCheck] = useState(false);
   const [taskTitle1, setTaskTitle1] = useState("");
+
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,7 +78,6 @@ export const ToDoListForm = ({
     };
   };
   const addTodo = (e, id, todoItem) => {
-    setTaskTitle1(taskTitle1);
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
@@ -90,9 +87,17 @@ export const ToDoListForm = ({
     setTodos([...todos, todoItem]);
     updateItem(e, manipulateItem(id, todoItem));
   };
-  const handleInput = (event) => {
-    setTaskTitle1(event.target.value);
-  };
+
+  // const autoSave = async (event, id, todos) => {
+  //   debounced();
+  //   await sleep(1500);
+  //   if (isSearching) console.log("Firing .....");
+  //   //  addTodo(event, id, todos);
+  // };
+
+  const autoSave = useDebouncedCallback((e, id, todos) => {
+    addTodo(e, id, todos);
+  }, 1000);
 
   const deleteTodo = (id, e, todo) => {
     const cleanList = todos.filter((item) => item._id !== todo._id);
@@ -113,7 +118,8 @@ export const ToDoListForm = ({
               <TextField
                 label="What to do?"
                 value={taskTitle}
-                onChange={(event) => handleInput(event)}
+                onInput={(e) => setTaskTitle1(e.target.value)}
+                onChange={(e) => autoSave(e, toDoList._id, todos)}
                 className={classes.textField}
               />
               <span style={{ padding: "5px", fontWeight: "bolder" }}>
@@ -125,7 +131,7 @@ export const ToDoListForm = ({
               ></span>{" "}
               <Checkbox
                 checked={completed}
-                onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
+                onClick={(e) => handleCheck(toDoList._id,e, todos[index])}
               ></Checkbox>
               <Button
                 size="small"
