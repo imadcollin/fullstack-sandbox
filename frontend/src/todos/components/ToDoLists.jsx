@@ -9,7 +9,7 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import Typography from "@material-ui/core/Typography";
 import { ToDoListForm } from "./ToDoListForm";
 import ApiConfig from "../../ApiConfig";
-import { Button,Checkbox } from "@material-ui/core";
+import { Button, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Moment from "moment";
@@ -61,7 +61,6 @@ export const ToDoLists = ({ style }) => {
   /********************************************************** */
   const updateItem = async (e, newItem) => {
     let payload = newItem;
-
     //e.stopPropagation();
     const updatedTodo = await ApiConfig.updateItem(payload._id, payload);
 

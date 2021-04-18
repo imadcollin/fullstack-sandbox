@@ -36,7 +36,7 @@ const useStyles = makeStyles({
 
 export const ToDoListForm = ({ toDoList, updateItem }) => {
   const [todos, setTodos] = useState(toDoList.todos);
-  const [taskTitle1, setTaskTitle1] = useState("init");// Not null onloading.
+  const [taskTitle1, setTaskTitle1] = useState("b"); // Not null onloading.
   const [check] = useState(false);
   const [text, setText] = useState("");
 
@@ -47,7 +47,9 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const handleCheck = (id, e, todo) => {
-    if (todo.taskTitle || taskTitle1) {
+    console.log(taskTitle1);
+    console.log(todo.taskTitle);
+    if (!(todo.taskTitle || taskTitle1)) {
       alert("Please give a title...!");
       e.target.checked = false;
       return;
@@ -77,20 +79,26 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
       todos: newTodos,
     };
   };
-  const addTodo = (e, id, todoItem) => {
-    setTaskTitle1(null);
+
+  const save = (e, id, todoItem) => {
+    setTaskTitle1("kkkkkkkkkk");
+    console.log(todoItem);
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
     };
     todoItem.pop();
     todoItem.push(updateTodo);
-    setTodos([...todos, todoItem]);
-    updateItem(e, manipulateItem(id, todoItem));
+    setTodos((prev) => {
+      return [...prev, todoItem];
+    });
+    const newItem = manipulateItem(id, todoItem);
+
+    updateItem(e, newItem);
   };
 
   const autoSave = useDebouncedCallback((e, id, todos) => {
-    addTodo(e, id, todos);
+    save(e, id, todos);
   }, 1000);
 
   const deleteTodo = (id, e, todo) => {
@@ -99,10 +107,14 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     setTodos(cleanList);
     updateItem(e, manipulateItem(id, cleanList));
   };
+  const handleInputAndSave = (e, id, todos) => {
+    setTaskTitle1(e.target.value);
+    autoSave(e, id, todos);
+  };
 
   const addOneItem = (todos) => {
     if (taskTitle1) {
-      setTodos([...todos, { id: "red" }]);
+      setTodos([...todos, {}]);
       setTaskTitle1(null);
       setText("");
     } else setText("Please give a title for the Todo first.");
@@ -121,8 +133,10 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
               <TextField
                 label="What to do?"
                 value={taskTitle}
-                onInput={(e) => setTaskTitle1(e.target.value)}
-                onChange={(e) => autoSave(e, toDoList._id, todos)}
+                readOnly
+                disabled={taskTitle}
+                onInput={(e) => handleInputAndSave(e, toDoList._id, todos)}
+                //onChange={(e) => autoSave(e, toDoList._id, todos)}
                 className={classes.textField}
               />
               <span style={{ padding: "5px", fontWeight: "bolder" }}>
@@ -160,14 +174,14 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
             >
               Add Todo <AddIcon />
             </Button>
-            <Button
+            {/* <Button
               type="submit"
               variant="contained"
               color="primary"
               onClick={(e) => addTodo(e, toDoList._id, todos)}
             >
               Save
-            </Button>
+            </Button> */}
             <Typography color="error" component="h2">
               {text}
             </Typography>
