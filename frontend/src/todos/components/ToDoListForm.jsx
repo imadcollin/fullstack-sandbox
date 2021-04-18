@@ -13,7 +13,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
 import { useDebouncedCallback } from "use-debounce";
-
 const useStyles = makeStyles({
   card: {
     margin: "1rem",
@@ -36,33 +35,34 @@ const useStyles = makeStyles({
 });
 
 export const ToDoListForm = ({ toDoList, updateItem }) => {
-  const classes = useStyles();
   const [todos, setTodos] = useState(toDoList.todos);
-  const [check, setCheck] = useState(false);
-  const [taskTitle1, setTaskTitle1] = useState("");
+  const [taskTitle1, setTaskTitle1] = useState("init");// Not null onloading.
+  const [check] = useState(false);
+  const [text, setText] = useState("");
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const classes = useStyles();
 
   const handleSubmit = (event) => {
     event.preventDefault();
   };
 
-  const handleCheck = (id, e, t) => {
-    if (!(t.taskTitle || taskTitle1)) {
+  const handleCheck = (id, e, todo) => {
+    if (todo.taskTitle || taskTitle1) {
       alert("Please give a title...!");
       e.target.checked = false;
       return;
     }
     let title;
-    if (t.taskTitle) title = t.taskTitle;
-    else title = taskTitle1;
+    if (todo.taskTitle) title = todo.taskTitle;
+    else if (taskTitle1) title = taskTitle1;
+    else title = "";
 
-    let updateTodo = t;
-    updateTodo.completed = !t.completed;
+    let updateTodo = todo;
+    updateTodo.completed = !todo.completed;
     updateTodo.taskTitle = title;
-    setTaskTitle1(null);
+    setTaskTitle1("init");
     const modifiedList = todos.map((item) =>
-      item._id === t._id ? updateTodo : item
+      item._id === todo._id ? updateTodo : item
     );
     setTodos(modifiedList);
     const updatedITem = manipulateItem(id, modifiedList);
@@ -78,6 +78,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     };
   };
   const addTodo = (e, id, todoItem) => {
+    setTaskTitle1(null);
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
@@ -88,21 +89,23 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     updateItem(e, manipulateItem(id, todoItem));
   };
 
-  // const autoSave = async (event, id, todos) => {
-  //   debounced();
-  //   await sleep(1500);
-  //   if (isSearching) console.log("Firing .....");
-  //   //  addTodo(event, id, todos);
-  // };
-
   const autoSave = useDebouncedCallback((e, id, todos) => {
     addTodo(e, id, todos);
   }, 1000);
 
   const deleteTodo = (id, e, todo) => {
     const cleanList = todos.filter((item) => item._id !== todo._id);
+    setTaskTitle1("ttt");
     setTodos(cleanList);
     updateItem(e, manipulateItem(id, cleanList));
+  };
+
+  const addOneItem = (todos) => {
+    if (taskTitle1) {
+      setTodos([...todos, { id: "red" }]);
+      setTaskTitle1(null);
+      setText("");
+    } else setText("Please give a title for the Todo first.");
   };
 
   return (
@@ -131,7 +134,8 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
               ></span>{" "}
               <Checkbox
                 checked={completed}
-                onClick={(e) => handleCheck(toDoList._id,e, todos[index])}
+                value="test"
+                onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
               ></Checkbox>
               <Button
                 size="small"
@@ -151,7 +155,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
               type="button"
               color="primary"
               onClick={() => {
-                setTodos([...todos, { id: "red" }]);
+                addOneItem(todos);
               }}
             >
               Add Todo <AddIcon />
@@ -164,6 +168,9 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
             >
               Save
             </Button>
+            <Typography color="error" component="h2">
+              {text}
+            </Typography>
           </CardActions>
         </form>
       </CardContent>
