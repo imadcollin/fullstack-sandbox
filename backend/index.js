@@ -73,6 +73,7 @@ app.put("/:id", (req, res) => {
     todos: req.body.todos,
     completed: req.body.completed,
     created: req.body.created,
+    remain: req.body.remain,
   };
   repository
     .updateById(id, todo)
