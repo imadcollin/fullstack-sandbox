@@ -18,7 +18,6 @@ import MomentUtils from "@date-io/moment";
 // import DateFnsUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 
@@ -123,6 +122,14 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const handleDateChange = (id, todo, date) => {
+    console.log(todo);
+    let created = Moment(created).format("MM-DD-YYYY");
+    let overdue = Moment(todo.overdue).format("MM-DD-YYYY");
+
+    if (Moment(created).isAfter(date)) {
+      alert("The overdue should be after created...");
+      return;
+    }
     setSelectedDate(date);
 
     let updateTodo = todo;
@@ -130,16 +137,17 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     const modifiedList = todos.map((item) =>
       item._id === todo._id ? updateTodo : item
     );
-
     const updatedITem = manipulateItem(id, modifiedList);
     updateItem("e", updatedITem);
+    setTodos(modifiedList);
+    window.location.reload(false);
   };
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography component="h2">{toDoList.title}</Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
-          {todos.map(({ taskTitle, completed, created }, index) => (
+          {todos.map(({ taskTitle, completed, created, remain }, index) => (
             <div key={index} className={classes.todoLine}>
               <Typography className={classes.standardSpace} variant="h6">
                 {index + 1}
@@ -182,7 +190,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                 />
               </MuiPickersUtilsProvider>
               <span style={{ padding: "5px", fontWeight: "bolder" }}>
-                Remain {todos[index].remain} days:
+                Remain {remain} days:
               </span>
               <Button
                 size="small"

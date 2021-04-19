@@ -72,7 +72,7 @@ app.put("/:id", (req, res) => {
     title: req.body.title,
     todos: req.body.todos,
     completed: req.body.completed,
-    created: req.body.created,
+    // created: req.body.created,
     remain: req.body.remain,
   };
   repository
