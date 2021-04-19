@@ -51,7 +51,6 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     if (!(todo.taskTitle || taskTitle1)) {
       alert("Please give a title...!");
       e.target.checked = false;
-      todos.pop();
       return;
     }
 
