@@ -47,26 +47,26 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const handleCheck = (id, e, todo) => {
-    console.log(taskTitle1);
-    console.log(todo.taskTitle);
+
     if (!(todo.taskTitle || taskTitle1)) {
       alert("Please give a title...!");
       e.target.checked = false;
+      todos.pop();
       return;
     }
+
     let title;
     if (todo.taskTitle) title = todo.taskTitle;
-    else if (taskTitle1) title = taskTitle1;
-    else title = "";
+    else title = taskTitle1;
 
     let updateTodo = todo;
     updateTodo.completed = !todo.completed;
     updateTodo.taskTitle = title;
-    setTaskTitle1("init");
+
     const modifiedList = todos.map((item) =>
       item._id === todo._id ? updateTodo : item
     );
-    setTodos(modifiedList);
+
     const updatedITem = manipulateItem(id, modifiedList);
     updateItem(e, updatedITem);
   };
@@ -81,19 +81,13 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const save = (e, id, todoItem) => {
-    setTaskTitle1("kkkkkkkkkk");
-    console.log(todoItem);
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
     };
     todoItem.pop();
     todoItem.push(updateTodo);
-    setTodos((prev) => {
-      return [...prev, todoItem];
-    });
     const newItem = manipulateItem(id, todoItem);
-
     updateItem(e, newItem);
   };
 
@@ -103,7 +97,6 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
 
   const deleteTodo = (id, e, todo) => {
     const cleanList = todos.filter((item) => item._id !== todo._id);
-    setTaskTitle1("ttt");
     setTodos(cleanList);
     updateItem(e, manipulateItem(id, cleanList));
   };
