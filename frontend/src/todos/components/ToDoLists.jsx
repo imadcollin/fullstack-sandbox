@@ -45,6 +45,7 @@ export const ToDoLists = ({ style }) => {
     const fetchGetAllItems = async () => {
       const items = await sleep(1000).then(() => ApiConfig.getAllItems());
       setItems(items);
+      console.log("fetch");
     };
     fetchGetAllItems();
   }, [items]);
@@ -63,10 +64,7 @@ export const ToDoLists = ({ style }) => {
     let payload = newItem;
     //e.stopPropagation();
     const updatedTodo = await ApiConfig.updateItem(payload._id, payload);
-
-    setItems(
-      items.map((item) => (item._id === payload._id ? updatedTodo : item))
-    );
+    setItems(items);
   };
 
   /********************************************************** */
