@@ -13,6 +13,15 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
 import { useDebouncedCallback } from "use-debounce";
+
+import DateFnsUtils from "@date-io/moment";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
+
 const useStyles = makeStyles({
   card: {
     margin: "1rem",
@@ -39,7 +48,9 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   const [taskTitle1, setTaskTitle1] = useState("b"); // Not null onloading.
   const [check] = useState(false);
   const [text, setText] = useState("");
-
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [overdue] = React.useState(new Date());
+  
   const classes = useStyles();
 
   const handleSubmit = (event) => {
@@ -112,6 +123,11 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     } else setText("Please give a title for the Todo first.");
   };
 
+  const handleDateChange = (date) => {
+    date = Moment(date).format("YYYY-MM-DD");
+    console.log(date);
+    setSelectedDate(date);
+  };
   return (
     <Card className={classes.card}>
       <CardContent>
@@ -143,6 +159,24 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                 value="test"
                 onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
               ></Checkbox>
+
+
+              {Moment(created).format("MM-DD-YYYY")}
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="Date picker dialog"
+                  format="MM/DD/YYYY"
+                  value={overdue}
+                  onChange={(e, date) =>
+                    handleDateChange(toDoList._id, todos[index], date)
+                  }
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </MuiPickersUtilsProvider>
               <Button
                 size="small"
                 color="secondary"
