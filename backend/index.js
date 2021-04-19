@@ -67,12 +67,12 @@ app.delete("/:id", (req, res) => {
 });
 /********************************************************** */
 app.put("/:id", (req, res) => {
-
   const { id } = req.params;
   const todo = {
     title: req.body.title,
     todos: req.body.todos,
     completed: req.body.completed,
+    created: req.body.created,
   };
   repository
     .updateById(id, todo)
