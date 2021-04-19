@@ -13,14 +13,14 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import Moment from "moment";
 import { useDebouncedCallback } from "use-debounce";
+import MomentUtils from "@date-io/moment";
 
-import DateFnsUtils from "@date-io/moment";
+// import DateFnsUtils from "@date-io/moment";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-
 
 const useStyles = makeStyles({
   card: {
@@ -50,7 +50,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   const [text, setText] = useState("");
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [overdue] = React.useState(new Date());
-  
+
   const classes = useStyles();
 
   const handleSubmit = (event) => {
@@ -58,7 +58,6 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const handleCheck = (id, e, todo) => {
-
     if (!(todo.taskTitle || taskTitle1)) {
       alert("Please give a title...!");
       e.target.checked = false;
@@ -123,10 +122,17 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     } else setText("Please give a title for the Todo first.");
   };
 
-  const handleDateChange = (date) => {
-    date = Moment(date).format("YYYY-MM-DD");
-    console.log(date);
+  const handleDateChange = (id, todo, date) => {
     setSelectedDate(date);
+
+    let updateTodo = todo;
+    updateTodo.overdue = date;
+    const modifiedList = todos.map((item) =>
+      item._id === todo._id ? updateTodo : item
+    );
+
+    const updatedITem = manipulateItem(id, modifiedList);
+    updateItem("e", updatedITem);
   };
   return (
     <Card className={classes.card}>
@@ -150,7 +156,8 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
               <span style={{ padding: "5px", fontWeight: "bolder" }}>
                 Created:
               </span>
-              {Moment(created).format("YYYY-MM-DD")}
+              {/* {Moment(created).format("YYYY-MM-DD")} */}
+              {Moment(created).format("MM-DD-YYYY")}
               <span
                 style={{ paddingLeft: "15px", fontWeight: "bolder" }}
               ></span>{" "}
@@ -159,10 +166,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                 value="test"
                 onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
               ></Checkbox>
-
-
-              {Moment(created).format("MM-DD-YYYY")}
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
                 <KeyboardDatePicker
                   margin="normal"
                   id="date-picker-dialog"
@@ -177,6 +181,9 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                   }}
                 />
               </MuiPickersUtilsProvider>
+              <span style={{ padding: "5px", fontWeight: "bolder" }}>
+                Remain {todos[index].remain} days:
+              </span>
               <Button
                 size="small"
                 color="secondary"
