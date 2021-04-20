@@ -187,7 +187,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                     style={{ width: "20%" }}
                     margin="normal"
                     id="date-picker-dialog"
-                    // label="Date picker dialog"
+                    // label="Overdue"
                     format="MM/DD/YYYY"
                     value={overdue}
                     onChange={(e, date) =>
@@ -199,7 +199,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                   />
                 </MuiPickersUtilsProvider>
                 <span style={{ padding: "5px", fontWeight: "bolder" }}>
-                  Remain {remain} days
+                  In {remain} days
                 </span>
                 <Button
                   size="small"
