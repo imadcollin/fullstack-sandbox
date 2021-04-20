@@ -5,6 +5,9 @@ const TaskSchema = new Schema({
   taskTitle: String,
   completed: Boolean,
   created: {type: Date, default: Date.now},
+  overdue: String,
+  remain: String
+
 },{ _id :true,// false
 });
 
