@@ -29,21 +29,96 @@ If you don't have a favorite editor we highly recommend [VSCode](https://code.vi
 
 You can open the root folder in one workspace, or `/frontend` and `/backend` in seperate workspaces - both should work fine.
 
-## Assignment
-Your assignment is to improve this todo list application. At the moment the application is simple and can only create and remove todos.
-As is, nothing is persisted in the server. As a result all state is cleared when refreshing the page!
-Below follows one main task and 4 additional tasks. Your assignment is to complete the main task together with at least 2 out of 4 of the additional tasks.
-If you feel constrained by time (which is totally fine!), prioritize quality over quantity.
+### The Stack
+Build using MERN stack, therefore you need to run the server and POST some data in order to get started. 
 
-### Main Task
-Persist todos on the server. Persisting in a database is not required. (Simple js structures on the server is fine). If you do go for an actual DB (again not required), be sure to include instructions of how to get it up and running.
+### To-do 
+1. Title editing functionality.
+2. Merging Overdue branch 
+3. Refactoring
+4. Add _isLoading feature 
+5. Add env file
 
-### Additional tasks
-- Don't require users to press save when an item is added/edited in the todolist. (Autosave functionality)
-- Make it possible to indicate that a todo is completed.
-- Indicate that a todolist is completed if all todo items within are completed.
-- Add a date for completion to todo items. Indicate how much time is remaining or overdue.
 
-## Submission
+### DB
+Mongoos collection as follows:    
 
-Send a link to your forked repository to your contact person at Sellpy.
+
+GET master branch
+```json
+[
+    {
+        "_id": "607ebace5db838a3e44c6ac4",
+        "title": "title 1",
+        "todos": [
+            {
+                "_id": "607ebace5db838a3e44c6ac5",
+                "taskTitle": "task 1",
+                "completed": true,
+                "remain": "0",
+                "created": "2021-04-20T11:28:14.304Z"
+            },
+            {
+                "_id": "607ebace5db838a3e44c6ac6",
+                "taskTitle": "task 2",
+                "completed": true,
+                "remain": "0",
+                "created": "2021-04-20T11:28:14.304Z"
+            }
+        ],
+        "completed": true,
+        "created": "2021-04-20T11:28:14.306Z",
+        "__v": 0
+    }
+]
+```
+
+POST master branch
+```json
+    {
+        "title": "title 1",
+        "completed": true,
+        "todos" : [
+             {
+                 "taskTitle": "task 1",
+                "completed": false
+
+            },
+              {
+                 "taskTitle": "task 2",
+                "completed": true
+            }
+        ]
+
+    }
+```
+
+
+GET Ovderdue branch
+```json
+[
+    {
+        "_id": "607df35ae0742781c5a8e62e",
+        "title": "title 1",
+        "todos": [
+            {
+                "_id": "607df1c2a56d7b810472180a",
+                "completed": false,
+                "overdue": "04/23/2021",
+                "remain": "4",
+                "created": "2021-04-19T21:10:26.904Z"
+            },
+            {
+                "_id": "607df1c2a56d7b810472180b",
+                "completed": true,
+                "remain": "11",
+                "created": "2021-04-19T21:10:26.905Z",
+                "overdue": "04/30/2021"
+            }
+        ],
+        "completed": false,
+        "created": "2021-04-19T21:17:14.781Z",
+        "__v": 0
+    }
+]
+```
