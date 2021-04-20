@@ -165,21 +165,29 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
                 <span style={{ padding: "5px", fontWeight: "bolder" }}>
                   Created:
                 </span>
-                {/* {Moment(created).format("YYYY-MM-DD")} */}
                 {Moment(created).format("MM-DD-YYYY")}
                 <span
                   style={{ paddingLeft: "15px", fontWeight: "bolder" }}
                 ></span>{" "}
+                <span style={{ paddingLeft: "5px", fontWeight: "bolder" }}>
+                  Status:
+                </span>
                 <Checkbox
                   checked={completed}
                   value="test"
                   onClick={(e) => handleCheck(toDoList._id, e, todos[index])}
                 ></Checkbox>
+                <span style={{ padding: "5px", fontWeight: "bolder" }}>
+                  Overdue:
+                </span>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                   <KeyboardDatePicker
+                    autoOk={true}
+                    showTodayButton={true}
+                    style={{ width: "20%" }}
                     margin="normal"
                     id="date-picker-dialog"
-                    label="Date picker dialog"
+                    // label="Date picker dialog"
                     format="MM/DD/YYYY"
                     value={overdue}
                     onChange={(e, date) =>
