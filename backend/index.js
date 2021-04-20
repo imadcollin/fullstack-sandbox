@@ -70,6 +70,7 @@ app.put("/:id", (req, res) => {
   console.log("reached in put ")
   const { id } = req.params;
   const todo = {
+    _id: req.body._id,
     taskTitle: req.body.title,
     todos: req.body.todos,
     completed: req.body.completed,
