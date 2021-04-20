@@ -92,6 +92,8 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     const updateTodo = {
       taskTitle: taskTitle1,
       completed: check,
+      overdue: overdue, 
+      
     };
     todoItem.pop();
     todoItem.push(updateTodo);
@@ -122,6 +124,7 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
   };
 
   const handleDateChange = (id, todo, date) => {
+    console.log("todo on change");
     console.log(todo);
     let created = Moment(created).format("MM-DD-YYYY");
     let overdue = Moment(todo.overdue).format("MM-DD-YYYY");
@@ -139,15 +142,14 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     );
     const updatedITem = manipulateItem(id, modifiedList);
     updateItem("e", updatedITem);
-    setTodos(modifiedList);
-    window.location.reload(false);
+ 
   };
   return (
     <Card className={classes.card}>
       <CardContent>
         <Typography component="h2">{toDoList.title}</Typography>
         <form onSubmit={handleSubmit} className={classes.form}>
-          {todos.map(({ taskTitle, completed, created, remain }, index) => (
+          {todos.map(({ taskTitle, completed, created, remain ,overdue}, index) => (
             <div key={index} className={classes.todoLine}>
               <Typography className={classes.standardSpace} variant="h6">
                 {index + 1}

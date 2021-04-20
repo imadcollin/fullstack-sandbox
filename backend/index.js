@@ -67,13 +67,14 @@ app.delete("/:id", (req, res) => {
 });
 /********************************************************** */
 app.put("/:id", (req, res) => {
+  console.log("reached in put ")
   const { id } = req.params;
   const todo = {
-    title: req.body.title,
+    taskTitle: req.body.title,
     todos: req.body.todos,
     completed: req.body.completed,
     // created: req.body.created,
-    remain: req.body.remain,
+    // remain: (req.body.remain || '0'),
   };
   repository
     .updateById(id, todo)
