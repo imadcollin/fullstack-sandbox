@@ -64,6 +64,8 @@ export const ToDoLists = ({ style }) => {
 
     // //e.stopPropagation();
     await ApiConfig.updateItem(payload._id, payload);
+    setItems( items => [...items, `${items.length}`]);
+
   };
 
   /********************************************************** */
