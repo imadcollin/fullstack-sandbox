@@ -30,14 +30,15 @@ class TodoRepository {
   }
 
   updateById(id, object) {
-    console.log("update");
-    console.log(object);
+    const updateTodos = remain(object.todos);
+
     const query = { _id: id };
     return this.model.findOneAndUpdate(query, {
       $set: {
         taskTitle: object.taskTitle,
-        todos: remain(object.todos),
+        todos: updateTodos,
         completed: isCompleted(object.todos),
+        // completed: object.completed,
       },
     });
   }
@@ -48,7 +49,6 @@ const isCompleted = (todos) => {
 };
 
 const remain = (todos) => {
-  console.log(todos);
   for (let i = 0; i < todos.length; i++) {
     todos[i].remain = calcDays(todos[i].created, todos[i].overdue);
   }
@@ -60,6 +60,6 @@ const calcDays = (created, over) => {
   const date2 = new Date(over);
   const diffInMs = Math.abs(date2 - date1);
   let x = diffInMs / (1000 * 60 * 60 * 24);
-  return x|0;
+  return x | 0;
 };
 module.exports = new TodoRepository(Todo);

@@ -42,13 +42,13 @@ export const ToDoLists = ({ style }) => {
 
   /********************************************************** */
   useEffect(() => {
-    const fetchGetAllItems = async () => {
-      const items = await sleep(1000).then(() => ApiConfig.getAllItems());
-      setItems(items);
-    };
     fetchGetAllItems();
-  }, [items]);
+  }, []);
 
+  const fetchGetAllItems = async () => {
+    const items = await sleep(500).then(() => ApiConfig.getAllItems());
+    setItems([...items]);
+  };
   /********************************************************** */
   const deleteItem = (item) => {
     console.log(item._id);
@@ -64,8 +64,8 @@ export const ToDoLists = ({ style }) => {
 
     // //e.stopPropagation();
     await ApiConfig.updateItem(payload._id, payload);
-    setItems( items => [...items, `${items.length}`]);
 
+    fetchGetAllItems();
   };
 
   /********************************************************** */

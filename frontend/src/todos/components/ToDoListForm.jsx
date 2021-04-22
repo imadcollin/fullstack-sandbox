@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   TextField,
@@ -43,7 +43,15 @@ const useStyles = makeStyles({
 });
 
 export const ToDoListForm = ({ toDoList, updateItem }) => {
-  const [todos, setTodos] = useState(toDoList.todos);
+  useEffect(() => {
+    setTodos([...toDoList.todos]);
+  }, [toDoList, save]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  const [todos, setTodos] = useState([...toDoList.todos]);
   const [taskTitle1, setTaskTitle1] = useState("b"); // Not null onloading.
   const [check] = useState(false);
   const [text, setText] = useState("");
@@ -52,21 +60,15 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
 
   const classes = useStyles();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-
   const handleCheck = (id, e, todo) => {
     if (!(todo.taskTitle || taskTitle1)) {
       alert("Please give a title...!");
       e.target.checked = false;
       return;
     }
-
     let title;
     if (todo.taskTitle) title = todo.taskTitle;
     else title = taskTitle1;
-
     let updateTodo = todo;
     updateTodo.completed = !todo.completed;
     updateTodo.taskTitle = title;
@@ -74,7 +76,6 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     const modifiedList = todos.map((item) =>
       item._id === todo._id ? updateTodo : item
     );
-
     const updatedITem = manipulateItem(id, modifiedList);
     updateItem(e, updatedITem);
   };
@@ -137,10 +138,13 @@ export const ToDoListForm = ({ toDoList, updateItem }) => {
     const modifiedList = todos.map((item) =>
       item._id === updateTodo._id ? updateTodo : item
     );
-    setTodos(modifiedList);
+    //setTodos(modifiedList);
     const updatedITem = manipulateItem(id, modifiedList);
     updateItem(e, updatedITem);
-    window.location.reload(); // Bug work-around
+    setTodos([...toDoList.todos]);
+    console.log("toDoList.todos");
+    console.log(toDoList.todos);
+    // window.location.reload(); // Bug work-around
   };
   return (
     <Card className={classes.card}>
