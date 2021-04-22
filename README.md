@@ -10,7 +10,7 @@ NodeJS - https://nodejs.org/en/download/
 
 
 ### The Stack
-Build using MERN stack, therefore you need to run the server and POST some data in order to get started. 
+Build using MERN stack, and the database is already set as a MongoDB cluster with some data, similarly another URL is provided for mongo service in case the cluster was not active.  
 
 ### Development set-up in short
 1. Make sure the server is running (navigate to backend folder and run the server file)
@@ -45,7 +45,9 @@ More about how to run the application:
 
 
 ### DB
-Mongoos collection as follows:    
+Mongoos collection as follows:   
+- The cluster already have some data.
+- In case of using local mongo service here a sample of the object:  
 
 POST master branch
 
