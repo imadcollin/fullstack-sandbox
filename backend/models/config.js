@@ -1,5 +1,5 @@
 module.exports = {
-     url: "mongodb://localhost:27017/todo"
-  //  url: "mongodb://mongod:27017/"
-  };
-  
+  url:
+    "mongodb+srv://USER:USER@cluster0.mvpoy.mongodb.net/TODO?retryWrites=true&w=majority",
+  //url: "mongodb://localhost:27017/todo"
+};
