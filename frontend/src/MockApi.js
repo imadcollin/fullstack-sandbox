@@ -21,5 +21,39 @@ const items = [
         created: '2020/01/03'
     }
 ];
+
+const data= [{
+    "title": "title 1",
+    "todos": [
+        {
+            "taskTitle": "task 1",
+            "completed": true,
+            "overdue": "04/21/2021"
+        },
+        {
+            "_id": "607f20373b212cb128eabd31",
+            "taskTitle": "task 2",
+            "completed": true,
+            "overdue": "04/23/2021"
+        }
+    ]
+  },
+  {
+    "title": "title 2",
+    "todos": [
+        {
+            "taskTitle": "task 1",
+            "completed": true,
+            "overdue": "04/21/2021"
+        },
+        {
+            "_id": "607f20373b212cb128eabd31",
+            "taskTitle": "task 2",
+            "completed": true,
+            "overdue": "04/23/2021"
+        }
+    ]
+  }];
 const getAllItems = () => items;
-export default { getAllItems };
+const getMockData = () => data;
+export default { getAllItems, getMockData };

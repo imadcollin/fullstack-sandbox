@@ -15,6 +15,10 @@ async function updateItem(id, payload) {
   const { data: newItem } = await axios.put(`${API_URL}${id}`, payload);
   return newItem;
 }
+async function postItem(payload) {
+  const { data: newItem } = await axios.post(`${API_URL}`, payload);
+  return newItem;
+}
 
 
-export default {getAllItems,deleteItem,updateItem };
+export default {getAllItems,deleteItem,updateItem,postItem };

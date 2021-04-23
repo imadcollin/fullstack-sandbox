@@ -9,7 +9,7 @@ import ReceiptIcon from "@material-ui/icons/Receipt";
 import Typography from "@material-ui/core/Typography";
 import { ToDoListForm } from "./ToDoListForm";
 import ApiConfig from "../../ApiConfig";
-import { Button, Checkbox } from "@material-ui/core";
+import { Button, Checkbox, TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Moment from "moment";
@@ -38,6 +38,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 export const ToDoLists = ({ style }) => {
   const [activeList, setActiveList] = useState();
   const [items, setItems] = useState({});
+  const [itemTitle, setItemTitle] = useState("");
   const classes = useStyles();
 
   /********************************************************** */
@@ -66,6 +67,20 @@ export const ToDoLists = ({ style }) => {
     await ApiConfig.updateItem(payload._id, payload);
 
     fetchGetAllItems();
+  };
+  const addItem = () => {
+    if (itemTitle) {
+      const item = {
+        title: itemTitle,
+        todos: [],
+        completed:false
+      };
+      setItemTitle("");
+      ApiConfig.postItem(item);
+      fetchGetAllItems();
+    } 
+    else alert("no title");
+     
   };
 
   /********************************************************** */
@@ -114,6 +129,32 @@ export const ToDoLists = ({ style }) => {
               </div>
             ))}
           </List>
+          <div>
+            <ListItem>
+              <ListItemIcon>
+                <ReceiptIcon />
+              </ListItemIcon>
+
+              <TextField
+                label="Item title"
+                value={itemTitle}
+                readOnly
+                style={{width:"80%"}}
+                onChange={(e) => setItemTitle(e.target.value)}
+                className={classes.textField}
+              />
+
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{ padding: "1%" }}
+                onClick={addItem}
+              >
+                Add Item
+              </Button>
+            </ListItem>
+          </div>
         </CardContent>
       </Card>
       {items[activeList] && (
